@@ -1,0 +1,61 @@
+# ========================
+# .NET
+# ========================
+bin/
+obj/
+*.user
+*.suo
+.vs/
+*.userprefs
+*.DotSettings.user
+
+# NuGet
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# EF Core Migrations (optional — some teams commit these, your call)
+# src/FTBackend.Infrastructure/Migrations/
+
+# ========================
+# Secrets & Environment
+# ========================
+appsettings.Development.json
+appsettings.Local.json
+*.pfx
+*.p12
+secrets.json
+
+# ========================
+# OS
+# ========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ========================
+# IDEs
+# ========================
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ========================
+# Docker
+# ========================
+.env
+.env.local
+.env.*.local
+
+# ========================
+# Logs & temp
+# ========================
+*.log
+logs/
+tmp/
+temp/

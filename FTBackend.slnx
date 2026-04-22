@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/FTBackend.API/FTBackend.API.csproj" />
+    <Project Path="src/FTBackend.Core/FTBackend.Core.csproj" />
+    <Project Path="src/FTBackend.Infrastructure/FTBackend.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/FTBackend.Tests/FTBackend.Tests.csproj" />
+  </Folder>
+</Solution>
