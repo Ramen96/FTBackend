@@ -5,7 +5,8 @@ public class Transaction
 {
     public Guid Id { get; set; } = Guid.NewGuid();
     public string UserId { get; set; } = string.Empty;  // Clerk user ID
-    public decimal Amount { get; set; }                  // decimal, never float for money
+    public Guid AccountId { get; set; }
+    public decimal Amount { get; set; }
     public string Description { get; set; } = string.Empty;
     public string Category { get; set; } = string.Empty;
     public TransactionType Type { get; set; }

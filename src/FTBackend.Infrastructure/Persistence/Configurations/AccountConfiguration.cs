@@ -32,7 +32,7 @@ public class AccountConfiguration : IEntityTypeConfiguration<Account>
         // One account has many transactions
         builder.HasMany(a => a.Transactions)
             .WithOne()
-            .HasForeignKey(t => t.Id)
+            .HasForeignKey(t => t.AccountId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }
