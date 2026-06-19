@@ -8,6 +8,7 @@ public class Liability
     public decimal Payment { get; set; }
     public decimal Rate { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime? UpdatedAt { get; set; }
 }
 
 public enum LiabilityCategory { CreditCards, AutoLoans, StudentLoans, RealEstate, BusinessLoans }

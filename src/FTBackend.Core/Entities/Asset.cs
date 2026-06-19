@@ -6,8 +6,9 @@ public class Asset
     public AssetCategory Category { get; set; }
     public decimal? Quantity { get; set; }
     public decimal Value { get; set; }
-    public string IncomeOrRate { get; set; } = string.Empty;
+    public decimal Rate { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime? UpdatedAt { get; set; }
 }
 
 public enum AssetCategory { ProducingAssets, GrowthAssets }
