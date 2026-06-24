@@ -23,14 +23,14 @@ public class AssetConfiguration : IEntityTypeConfiguration<Asset>
           .HasConversion<string>();
 
         builder.Property(t => t.Quantity)
-          .HasPresision(18, 2);
+          .HasPrecision(18, 2);
 
         builder.Property(t => t.Value)
           .IsRequired()
-          .HasPresision(18, 2);
+          .HasPrecision(18, 2);
           
         builder.Property(t => t.Rate)
           .IsRequired()
-          .HasPresision(18, 2);
+          .HasPrecision(18, 2);
     }
 }
