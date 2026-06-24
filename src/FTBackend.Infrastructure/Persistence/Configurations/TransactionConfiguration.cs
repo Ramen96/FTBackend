@@ -28,9 +28,8 @@ public class TransactionConfiguration : IEntityTypeConfiguration<Transaction>
 
         builder.Property(t => t.Type)
             .IsRequired()
-            .HasConversion<string>();   // stores "Income"/"Expense" not 0/1
+            .HasConversion<string>();
 
-        // Index so per-user queries are fast
         builder.HasIndex(t => t.UserId);
     }
 }
