@@ -8,6 +8,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 {
     public DbSet<Transaction> Transactions => Set<Transaction>();
     public DbSet<Account> Accounts => Set<Account>();
+    public DbSet<Asset> Assets => Set<Asset>();
+    public DbSet<Liability> Liabilitys => Set<Liability>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
