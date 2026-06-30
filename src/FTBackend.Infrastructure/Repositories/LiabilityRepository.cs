@@ -31,4 +31,14 @@ public class LiabilityRepository(AppDbContext context) : ILiabilityRepository
         await context.SaveChangesAsync();
         return liability;
     }
+
+    public async Task DeleteAsync(Guid id, string userId)
+    {
+        var liability = await GetByIdAsync(id, userId);
+        if (liability is not null)
+        {
+            context.Liabilities.Remove(liability);
+            await context.SaveChangesAsync();
+        }
+    }
 }
