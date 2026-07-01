@@ -10,7 +10,7 @@ namespace FTBackend.API.Controllers;
 [Authorize]
 [ApiController]
 [Route("api/[controller]")]
-public class AccountsController(IAccountRepository repo) : ControllerBase
+public class LiabilitiesController(ILiabilityRepository repo) : ControllerBase
 {
     private string UserId => User.FindFirstValue(ClaimTypes.NameIdentifier)
         ?? throw new UnauthorizedAccessException();
@@ -22,30 +22,48 @@ public class AccountsController(IAccountRepository repo) : ControllerBase
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetById(Guid id)
     {
-        var account = await repo.GetByIdAsync(id, UserId);
-        return account is null ? NotFound() : Ok(account);
+        var liability = await repo.GetByIdAsync(id, UserId);
+        return liability is null ? NotFound() : Ok(liability);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateAccountRequest request)
+    public async Task<IActionResult> Create([FromBody] CreateLiabilityRequest request)
     {
-        var account = new Account
+        var liability = new Liability
         {
             UserId = UserId,
             Name = request.Name,
-            Type = request.Type,
-            Balance = request.Balance
+            Category = request.Category,
+            Balance = request.Balance,
+            Payment = request.Payment,
+            Rate = request.Rate
         };
 
-        var created = await repo.CreateAsync(account);
+        var created = await repo.CreateAsync(liability);
         return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+    }
+
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateLiabilityRequest request)
+    {
+        var liability = await repo.GetByIdAsync(id, UserId);
+        if (liability is null) return NotFound();
+
+        if (request.Name is not null) liability.Name = request.Name;
+        if (request.Category.HasValue) liability.Category = request.Category.Value;
+        if (request.Balance.HasValue) liability.Balance = request.Balance.Value;
+        if (request.Payment.HasValue) liability.Payment = request.Payment.Value;
+        if (request.Rate.HasValue) liability.Rate = request.Rate.Value;
+
+        var updated = await repo.UpdateAsync(liability);
+        return Ok(updated);
     }
 
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> Delete(Guid id)
     {
-        var account = await repo.GetByIdAsync(id, UserId);
-        if (account is null) return NotFound();
+        var liability = await repo.GetByIdAsync(id, UserId);
+        if (liability is null) return NotFound();
 
         await repo.DeleteAsync(id, UserId);
         return NoContent();
