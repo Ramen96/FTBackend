@@ -13,6 +13,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // Repository registrations
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddScoped<IAssetRepository, AssetRepository>();
+builder.Services.AddScoped<ILiabilityRepository, LiabilityRepository>();
 
 // Clerk JWT Auth
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
