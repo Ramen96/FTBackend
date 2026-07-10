@@ -1,4 +1,3 @@
-// src/FTBackend.Core/Interfaces/IAccountRepository.cs
 using FTBackend.Core.Entities;
 
 namespace FTBackend.Core.Interfaces;
