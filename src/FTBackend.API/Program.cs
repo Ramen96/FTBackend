@@ -1,4 +1,5 @@
 using FTBackend.Core.Interfaces;
+using FTBackend.Core.Services;
 using FTBackend.Infrastructure.Persistence;
 using FTBackend.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -15,6 +16,7 @@ builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IAssetRepository, AssetRepository>();
 builder.Services.AddScoped<ILiabilityRepository, LiabilityRepository>();
+builder.Services.AddScoped<IReportService, ReportService>();
 
 // Clerk JWT Auth
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
