@@ -1,3 +1,5 @@
+namespace FTBackend.Core.Entities;
+
 public class Asset
 {
     public Guid Id { get; set; } = Guid.NewGuid();

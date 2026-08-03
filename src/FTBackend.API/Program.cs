@@ -18,6 +18,7 @@ builder.Services.AddScoped<IAssetRepository, AssetRepository>();
 builder.Services.AddScoped<ILiabilityRepository, LiabilityRepository>();
 builder.Services.AddScoped<IReportService, ReportService>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
+builder.Services.AddScoped<IActiveIncomeRepository, ActiveIncomeRepository>();
 
 // Clerk JWT Auth
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
