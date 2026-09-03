@@ -4,5 +4,7 @@ public record DashboardDto(
     decimal IncomeTotal,
     decimal ExpensesTotal,
     decimal AssetsTotal,
-    decimal LiabilitiesTotal
+    decimal LiabilitiesTotal,
+    decimal ActiveIncomeTotal,
+    decimal PassiveIncomeTotal
 );
