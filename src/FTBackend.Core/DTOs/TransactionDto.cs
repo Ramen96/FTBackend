@@ -17,7 +17,8 @@ public record CreateTransactionRequest(
     string Description,
     string Category,
     TransactionType Type,
-    Guid AccountId
+    Guid AccountId,
+    DateTime? Date
 );
 
 public record UpdateTransactionRequest(

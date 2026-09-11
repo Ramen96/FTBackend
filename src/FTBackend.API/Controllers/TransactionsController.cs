@@ -36,7 +36,9 @@ public class TransactionsController(ITransactionRepository repo) : ControllerBas
             Amount = request.Amount,
             Description = request.Description,
             Category = request.Category,
-            Type = request.Type
+            Type = request.Type,
+            AccountId = request.AccountId,
+            Date = request.Date ?? DateTime.UtcNow
         };
 
         var created = await repo.CreateAsync(transaction);
