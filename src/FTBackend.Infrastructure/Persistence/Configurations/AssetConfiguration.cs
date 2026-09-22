@@ -18,19 +18,18 @@ public class AssetConfiguration : IEntityTypeConfiguration<Asset>
           .IsRequired()
           .HasMaxLength(100);
 
-        builder.Property(t => t.Category)
-          .IsRequired()
-          .HasConversion<string>();
-
-        builder.Property(t => t.Quantity)
-          .HasPrecision(18, 2);
-
         builder.Property(t => t.Value)
           .IsRequired()
           .HasPrecision(18, 2);
-          
-        builder.Property(t => t.Rate)
-          .IsRequired()
-          .HasPrecision(18, 2);
+
+        builder.HasIndex(t => t.UserId);
+
+        builder.HasDiscriminator<string>("AssetType")
+          .HasValue<StockAsset>("Stock")
+          .HasValue<SavingsAsset>("Savings")
+          .HasValue<RealEstateAsset>("RealEstate")
+          .HasValue<BusinessAsset>("Business")
+          .HasValue<CryptoAsset>("Crypto")
+          .HasValue<CustomAsset>("Custom");
     }
 }

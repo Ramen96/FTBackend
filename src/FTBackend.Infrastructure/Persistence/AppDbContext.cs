@@ -1,4 +1,3 @@
-// src/FTBackend.Infrastructure/Persistence/AppDbContext.cs
 using FTBackend.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 
