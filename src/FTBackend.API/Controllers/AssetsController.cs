@@ -1,6 +1,6 @@
 using FTBackend.Core.DTOs;
-using FTBackend.Core.Entities;
 using FTBackend.Core.Interfaces;
+using FTBackend.Core.Mapping;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -17,46 +17,37 @@ public class AssetsController(IAssetRepository repo) : ControllerBase
 
     [HttpGet]
     public async Task<IActionResult> GetAll() =>
-        Ok(await repo.GetByUserIdAsync(UserId));
+        Ok((await repo.GetByUserIdAsync(UserId)).Select(a => a.ToItemDto()));
 
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetById(Guid id)
     {
         var asset = await repo.GetByIdAsync(id, UserId);
-        return asset is null ? NotFound() : Ok(asset);
+        return asset is null ? NotFound() : Ok(asset.ToItemDto());
     }
 
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateAssetRequest request)
     {
-        var asset = new Asset
-        {
-            UserId = UserId,
-            Name = request.Name,
-            Category = request.Category,
-            Quantity = request.Quantity,
-            Value = request.Value,
-            Rate = request.Rate
-        };
-
+        var asset = request.ToEntity(UserId);
         var created = await repo.CreateAsync(asset);
-        return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+        return CreatedAtAction(nameof(GetById), new { id = created.Id }, created.ToItemDto());
     }
 
     [HttpPut("{id:guid}")]
-    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateAssetRequest request)
+    public async Task<IActionResult> Update(Guid id, [FromBody] CreateAssetRequest request)
     {
-        var asset = await repo.GetByIdAsync(id, UserId);
-        if (asset is null) return NotFound();
+        var existing = await repo.GetByIdAsync(id, UserId);
+        if (existing is null) return NotFound();
 
-        if (request.Name is not null) asset.Name = request.Name;
-        if (request.Category.HasValue) asset.Category = request.Category.Value;
-        if (request.Quantity.HasValue) asset.Quantity = request.Quantity.Value;
-        if (request.Value.HasValue) asset.Value = request.Value.Value;
-        if (request.Rate.HasValue) asset.Rate = request.Rate.Value;
+        await repo.DeleteAsync(id, UserId);
 
-        var updated = await repo.UpdateAsync(asset);
-        return Ok(updated);
+        var replacement = request.ToEntity(UserId);
+        replacement.Id = id;
+        replacement.CreatedAt = existing.CreatedAt;
+
+        var created = await repo.CreateAsync(replacement);
+        return Ok(created.ToItemDto());
     }
 
     [HttpDelete("{id:guid}")]
