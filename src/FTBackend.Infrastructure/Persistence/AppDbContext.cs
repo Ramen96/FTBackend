@@ -9,7 +9,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<Account> Accounts => Set<Account>();
     public DbSet<Asset> Assets => Set<Asset>();
     public DbSet<Liability> Liabilities => Set<Liability>();
-    public DbSet<ActiveIncome> ActiveIncomes => Set<ActiveIncome>();
+    public DbSet<IncomeSource> IncomeSources => Set<IncomeSource>();
+    public DbSet<PayPeriodEntry> PayPeriodEntries => Set<PayPeriodEntry>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

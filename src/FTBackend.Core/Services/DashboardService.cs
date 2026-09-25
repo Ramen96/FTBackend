@@ -8,13 +8,13 @@ public class DashboardService(
     ITransactionRepository transactionRepository,
     IAssetRepository assetRepository,
     ILiabilityRepository liabilityRepository,
-    IActiveIncomeRepository activeIncomeRepository
+    IIncomeSourceRepository incomeSourceRepository
 ) : IDashboardService
 {
   private readonly ITransactionRepository _transactionRepository = transactionRepository;
   private readonly IAssetRepository _assetRepository = assetRepository;
   private readonly ILiabilityRepository _liabilityRepository = liabilityRepository;
-  private readonly IActiveIncomeRepository _activeIncomeRepository = activeIncomeRepository;
+  private readonly IIncomeSourceRepository _incomeSourceRepository = incomeSourceRepository;
 
   public async Task<DashboardDto> GetDashboardAsync(string userId)
   {
@@ -23,8 +23,8 @@ public class DashboardService(
     var expenses = transactions.Where(t => t.Type == TransactionType.Expense);
     var assets = await _assetRepository.GetByUserIdAsync(userId);
     var liabilities = await _liabilityRepository.GetByUserIdAsync(userId);
-    var activeIncome = await _activeIncomeRepository.GetByUserIdAsync(userId);
-    var activeIncomeTotal = activeIncome?.Amount ?? 0m;
+    var incomeSources = await _incomeSourceRepository.GetByUserIdAsync(userId);
+    var activeIncomeTotal = incomeSources.Sum(i => i.MonthlyGross);
     var passiveIncome = assets.Sum(a => a.MonthlyIncome);
     return new DashboardDto(
         income.Sum(t => t.Amount),
