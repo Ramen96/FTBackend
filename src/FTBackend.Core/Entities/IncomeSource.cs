@@ -32,6 +32,8 @@ public class IncomeSource
     _ => 0m
   };
 
+  public decimal MonthlyNet => MonthlyGross * (1 - TaxRate / 100m);
+
   private decimal ComputeHourlyMonthlyGross()
   {
     var periodsPerYear = Frequency == PayPeriod.Weekly ? 52m : 26m;
