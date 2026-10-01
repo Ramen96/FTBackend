@@ -31,4 +31,12 @@ public static class IncomeSourceMapper
         Frequency = request.Frequency,
         MonthlyAmount = request.MonthlyAmount
     };
+
+    public static PayPeriodEntryDto ToDto(this PayPeriodEntry entry) => new(
+        entry.Id,
+        entry.PeriodStartDate,
+        entry.HoursWorked,
+        entry.OvertimeHours,
+        entry.OvertimeMultiplier
+    );
 }

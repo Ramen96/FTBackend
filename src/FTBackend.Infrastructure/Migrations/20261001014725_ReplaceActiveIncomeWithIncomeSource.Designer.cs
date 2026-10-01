@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FTBackend.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20261001012043_ReplaceActiveIncomeWithIncomeSource")]
+    [Migration("20261001014725_ReplaceActiveIncomeWithIncomeSource")]
     partial class ReplaceActiveIncomeWithIncomeSource
     {
         /// <inheritdoc />
@@ -167,23 +167,27 @@ namespace FTBackend.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<decimal?>("HoursWorked")
-                        .HasColumnType("numeric");
+                        .HasPrecision(9, 2)
+                        .HasColumnType("numeric(9,2)");
 
                     b.Property<Guid>("IncomeSourceId")
                         .HasColumnType("uuid");
 
                     b.Property<decimal>("OvertimeHours")
-                        .HasColumnType("numeric");
+                        .HasPrecision(9, 2)
+                        .HasColumnType("numeric(9,2)");
 
                     b.Property<decimal>("OvertimeMultiplier")
-                        .HasColumnType("numeric");
+                        .HasPrecision(5, 2)
+                        .HasColumnType("numeric(5,2)");
 
                     b.Property<DateTime>("PeriodStartDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IncomeSourceId");
+                    b.HasIndex("IncomeSourceId", "PeriodStartDate")
+                        .IsUnique();
 
                     b.ToTable("PayPeriodEntries");
                 });

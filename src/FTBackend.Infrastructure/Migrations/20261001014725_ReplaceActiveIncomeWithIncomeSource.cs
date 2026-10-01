@@ -43,9 +43,9 @@ namespace FTBackend.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     IncomeSourceId = table.Column<Guid>(type: "uuid", nullable: false),
                     PeriodStartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    HoursWorked = table.Column<decimal>(type: "numeric", nullable: true),
-                    OvertimeHours = table.Column<decimal>(type: "numeric", nullable: false),
-                    OvertimeMultiplier = table.Column<decimal>(type: "numeric", nullable: false),
+                    HoursWorked = table.Column<decimal>(type: "numeric(9,2)", precision: 9, scale: 2, nullable: true),
+                    OvertimeHours = table.Column<decimal>(type: "numeric(9,2)", precision: 9, scale: 2, nullable: false),
+                    OvertimeMultiplier = table.Column<decimal>(type: "numeric(5,2)", precision: 5, scale: 2, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
@@ -65,9 +65,10 @@ namespace FTBackend.Infrastructure.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PayPeriodEntries_IncomeSourceId",
+                name: "IX_PayPeriodEntries_IncomeSourceId_PeriodStartDate",
                 table: "PayPeriodEntries",
-                column: "IncomeSourceId");
+                columns: new[] { "IncomeSourceId", "PeriodStartDate" },
+                unique: true);
         }
 
         /// <inheritdoc />

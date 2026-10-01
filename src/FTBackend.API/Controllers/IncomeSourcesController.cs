@@ -70,6 +70,51 @@ public class IncomeSourcesController(IIncomeSourceRepository repo) : ControllerB
     return NoContent();
   }
 
+  [HttpGet("{incomeSourceId:guid}/pay-periods")]
+  public async Task<IActionResult> GetPayPeriods(Guid incomeSourceId)
+  {
+    var incomeSource = await repo.GetByIdAsync(incomeSourceId, UserId);
+    if (incomeSource is null) return NotFound();
+
+    return Ok(incomeSource.PayPeriodEntries
+        .OrderByDescending(p => p.PeriodStartDate)
+        .Select(p => p.ToDto()));
+  }
+
+  [HttpPost("{incomeSourceId:guid}/pay-periods")]
+  public async Task<IActionResult> LogPayPeriod(Guid incomeSourceId, [FromBody] LogPayPeriodRequest request)
+  {
+    var incomeSource = await repo.GetByIdAsync(incomeSourceId, UserId);
+    if (incomeSource is null) return NotFound();
+
+    if (incomeSource.PayType != PayType.Hourly)
+      return BadRequest(new { message = "Pay periods can only be logged for Hourly income sources." });
+
+    var existing = incomeSource.PayPeriodEntries
+        .FirstOrDefault(p => p.PeriodStartDate == request.PeriodStartDate);
+
+    if (existing is not null)
+    {
+      existing.HoursWorked = request.HoursWorked;
+      existing.OvertimeHours = request.OvertimeHours;
+      existing.OvertimeMultiplier = request.OvertimeMultiplier;
+    }
+    else
+    {
+      incomeSource.PayPeriodEntries.Add(new PayPeriodEntry
+      {
+        IncomeSourceId = incomeSourceId,
+        PeriodStartDate = request.PeriodStartDate,
+        HoursWorked = request.HoursWorked,
+        OvertimeHours = request.OvertimeHours,
+        OvertimeMultiplier = request.OvertimeMultiplier
+      });
+    }
+
+    var updated = await repo.UpdateAsync(incomeSource);
+    return Ok(updated.ToDto());
+  }
+
   private static string? ValidateRequest(CreateIncomeSourceRequest request) => request.PayType switch
   {
     PayType.Salary when request.AnnualAmount is null =>
